@@ -1,0 +1,28 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "Todo List project for the Javascript course in The Odin Project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --watch --open 'brave'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lcyne/todo-list.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lcyne/todo-list/issues"
+  },
+  "homepage": "https://github.com/lcyne/todo-list#readme",
+  "dependencies": {
+    "date-fns": "^2.8.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
