@@ -1,4 +1,6 @@
 import { formatISO } from 'date-fns';
+import { enterTextEditMode } from './editing';
+import { classes } from './selectors';
 
 function renderProjects(projects) {
   document.body.appendChild(formatProjects(projects));
@@ -6,6 +8,7 @@ function renderProjects(projects) {
 
 function formatProjects(projects) {
   const container = makeProjectsContainer();
+  container.addEventListener('click', enterTextEditMode);
   projects.forEach(project => {
     container.appendChild(formatSingleProject(project))
   });
@@ -38,6 +41,7 @@ function formatSingleProject(project) {
 function formatTitle(title) {
   const element = document.createElement('p');
   element.textContent = title;
+  element.classList.add(classes.editableText);
   return element;
 }
 
@@ -91,4 +95,6 @@ function setPriorityColor(priority, target) {
 // importing format from date-fns breaks module.exports
 export {
   renderProjects,
+  formatTitle,
+  formatDescription,
 }
