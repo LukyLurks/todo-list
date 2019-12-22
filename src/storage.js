@@ -5,7 +5,7 @@ function saveProjects(projects) {
   try {
     localStorage.setItem(storageKey, JSON.stringify(projects));
   } catch(e) {
-    console.log('Couldn\'t save projects.' + e);
+    console.warn('Couldn\'t save projects.' + e);
     alert('Couldn\'t save projects.' + e);
   }
 }
@@ -15,10 +15,10 @@ function loadProjects() {
   if (savedProjects) {
     return JSON.parse(savedProjects);
   }
-  console.log('Couldn\'t find saved projects.');
+  console.warn('Couldn\'t find saved projects.');
 }
 
-module.exports = {
+export {
   saveProjects,
   loadProjects,
-};
+}

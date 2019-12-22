@@ -3,6 +3,6 @@ const classes = {
   editableDate : 'editable-date',
 };
 
-module.exports = {
+export {
   classes,
-};
+}

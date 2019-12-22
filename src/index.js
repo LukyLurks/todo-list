@@ -1,6 +1,7 @@
-import { Project, Todo } from './models';
+import { Project } from './models/project';
+import { Todo } from './models/todo';
 import { loadProjects, saveProjects } from './storage';
-import { renderProjects } from './display'
+import { renderProjects } from './display/projects'
 
 function initProjects() {
   return loadProjects() || [Project()];

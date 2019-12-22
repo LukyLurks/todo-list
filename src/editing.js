@@ -1,4 +1,4 @@
-import { formatTitle } from './display';
+import { formatTitle } from './display/common';
 import { classes } from './selectors';
 
 let emptyEditsRemain = false;
@@ -10,7 +10,7 @@ function enterTextEditMode(event) {
   if (isEditableText(event.target)) {
     const textToEdit = event.target;
     const parent = textToEdit.parentNode;
-    const editingField = makeTextEditField(textToEdit);
+    const editingField = createTextEditField(textToEdit);
     parent.replaceChild(editingField, textToEdit);
     editingField.focus();
   }
@@ -37,7 +37,7 @@ function applyTextEdit(event) {
   }
 }
 
-function makeTextEditField(textElement) {
+function createTextEditField(textElement) {
   const field = document.createElement('input');
   field.value = textElement.textContent;
   field.addEventListener('blur', applyTextEdit);

@@ -1,10 +1,3 @@
-function Project(title, todos) {
-  return {
-    title: title ? title : "Default",
-    todos: todos ? todos : [],
-  };
-}
-
 function Todo(title, description, deadline, priority) {
   return {
     title: title ? title : "Todo",
@@ -29,7 +22,6 @@ const _priorityLevels = {
   },
 };
 
-module.exports = {
-  Project,
+export {
   Todo,
-};
+}
