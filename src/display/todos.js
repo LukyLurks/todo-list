@@ -1,16 +1,23 @@
 import { formatISO } from 'date-fns';
 import { formatTitle } from './common';
+import { classes } from '../selectors';
 
 function formatTodos(todos) {
-  const element = document.createElement('ul');
+  const todoList = makeTodoListContainer();
   todos.forEach(item => {
-    element.appendChild(formatSingleTodo(item));
+    todoList.appendChild(formatSingleTodo(item));
   });
-  return element;
+  return todoList;
+}
+
+function makeTodoListContainer() {
+  let todoContainer = document.createElement('ul');
+  todoContainer.classList.add(classes.todoList);
+  return todoContainer;
 }
 
 function formatSingleTodo(todo) {
-  const output = document.createElement('li');
+  const output = makeTodoItem();
   for (let key in todo) {
     switch (key) {
       case 'title':
@@ -23,7 +30,8 @@ function formatSingleTodo(todo) {
         output.appendChild(formatDate(todo[key]));
         break;
       case 'priority':
-        setPriorityColor(todo[key], output)
+        output.appendChild(formatPriority(todo[key]));
+        setPriorityColor(todo[key], output);
         break;
       default:
         console.warn(`Unexpected key ${key} while formatting todo: skipping`);
@@ -33,13 +41,30 @@ function formatSingleTodo(todo) {
   return output;
 }
 
+function makeTodoItem() {
+  const todo = document.createElement('li');
+  todo.classList.add(classes.todo);
+  return todo;
+}
+
 function formatDescription(description) {
-  return formatTitle(description);
+  const element = formatTitle(description);
+  element.classList.remove(classes.title);
+  element.classList.add(classes.description);
+  return element;
 }
 
 function formatDate(date) {
   const element = document.createElement('p');
+  element.classList.add(classes.deadline);
   element.textContent = formatISO(new Date(date), { representation: 'date'});
+  return element;
+}
+
+function formatPriority(priority) {
+  const element = formatTitle(priority.level);
+  element.classList.remove(classes.title, classes.editableText);
+  element.classList.add(classes.priority);
   return element;
 }
 
@@ -49,4 +74,5 @@ function setPriorityColor(priority, target) {
 
 export {
   formatTodos,
+  formatDescription,
 }

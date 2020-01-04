@@ -1,6 +1,8 @@
-import { enterTextEditMode } from '../editing';
+import { enterTextEditMode } from '../editing/display';
 import { formatTodos } from './todos';
 import { formatTitle } from './common';
+import { ids } from '../selectors';
+import { setIndexes } from '../editing/data';
 
 function renderProjects(projects) {
   document.body.appendChild(formatProjects(projects));
@@ -12,11 +14,13 @@ function formatProjects(projects) {
   projects.forEach(project => {
     container.appendChild(formatSingleProject(project))
   });
+  setIndexes(container);
   return container;
 }
 
 function createProjectsContainer() {
   const container = document.createElement('div');
+  container.id = ids.allProjects;
   return container;
 }
 
@@ -40,4 +44,4 @@ function formatSingleProject(project) {
 
 export {
   renderProjects,
-}
+};

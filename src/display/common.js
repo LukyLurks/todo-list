@@ -4,10 +4,10 @@ import { classes } from '../selectors';
 function formatTitle(title) {
   const element = document.createElement('p');
   element.textContent = title;
-  element.classList.add(classes.editableText);
+  element.classList.add(classes.editableText, classes.title);
   return element;
 }
 
 export {
   formatTitle,
-}
+};

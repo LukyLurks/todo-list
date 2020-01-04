@@ -3,11 +3,11 @@ function Todo(title, description, deadline, priority) {
     title: title ? title : "Todo",
     description: description ? description : "Task description",
     deadline: deadline ? deadline : new Date(),
-    priority: priority ? priority : _priorityLevels.normal,
+    priority: priority ? priority : priorityLevels.normal,
   };
 }
 
-const _priorityLevels = { 
+const priorityLevels = { 
   low: {
     level: "Low",
     color: "green"
@@ -24,4 +24,5 @@ const _priorityLevels = {
 
 export {
   Todo,
-}
+  priorityLevels,
+};
