@@ -81,6 +81,31 @@ function getProjectIndex(node) {
 }
 
 /**
+ * Select the project DOM element containing that node
+ */
+function getTodoElement(node) {
+  return document.querySelector(
+    `[${attributes.todoIndex}="${getTodoIndex(node)}"]`
+  );
+}
+
+/**
+ * Gets the index of the todo containing that node within one project,
+ * grab the DOM element or reference the array containing the rendered data
+ */
+function getTodoIndex(node) {
+  if (node.hasAttribute(attributes.todoIndex)) {
+    return +node.getAttribute(attributes.todoIndex);
+  } else if (node.parentNode && !isProject(node.parentNode)) {
+    return getTodoIndex(node.parentNode);
+  }
+}
+
+function isProject(node) {
+  return node.classList.contains(classes.project);
+}
+
+/**
  * Save edits in the localStorage
  */
 function saveEdits(element) {
@@ -89,7 +114,16 @@ function saveEdits(element) {
   saveProjects(projectsData);
 }
 
+function deleteTodoFromData(element) {
+  const todoIndex = getTodoIndex(element);
+  const projectIndex = getProjectIndex(element);
+  projectsData[projectIndex].todos.splice(todoIndex, 1);
+}
+
 export {
   setIndexes,
+  getTodoElement,
+  getProjectElement,
+  deleteTodoFromData,
   saveEdits,
 };

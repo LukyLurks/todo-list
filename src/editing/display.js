@@ -1,7 +1,13 @@
 import { formatTitle } from '../display/common';
 import { formatDescription } from '../display/todos';
-import { classes } from '../selectors';
-import { saveEdits } from './data';
+import { classes, ids } from '../selectors';
+import { 
+  saveEdits,
+  setIndexes,
+  getTodoElement,
+  getProjectElement,
+  deleteTodoFromData,
+} from './data';
 
 let emptyEditsRemain = false;
 
@@ -57,6 +63,23 @@ function remakeEditedElement(field) {
   }
 }
 
+/**
+ * Remove a todo from the DOM and the localStorage
+ */
+function deleteTodo(event) {
+  const project = getProjectElement(event.target);
+  deleteTodoFromData(event.target);
+  deleteTodoFromDOM(event.target);
+  saveEdits(project);
+  setIndexes(document.querySelector(`#${ids.allProjects}`));
+}
+
+function deleteTodoFromDOM(element) {
+  const todo = getTodoElement(element);
+  todo.parentNode.removeChild(todo);
+}
+
 export {
   enterTextEditMode,
+  deleteTodo,
 };

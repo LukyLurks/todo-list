@@ -1,6 +1,7 @@
 import { formatISO } from 'date-fns';
 import { formatTitle } from './common';
 import { classes } from '../selectors';
+import { deleteTodo } from '../editing/display';
 
 function formatTodos(todos) {
   const todoList = makeTodoListContainer();
@@ -38,6 +39,7 @@ function formatSingleTodo(todo) {
         break;
     }
   }
+  addDeleteButton(output);
   return output;
 }
 
@@ -70,6 +72,13 @@ function formatPriority(priority) {
 
 function setPriorityColor(priority, target) {
   target.style.outline = `1px solid ${priority.color}`;
+}
+
+function addDeleteButton(target) {
+  const button = document.createElement('button');
+  button.textContent = 'Delete';
+  button.addEventListener('click', deleteTodo);
+  target.appendChild(button);
 }
 
 export {
