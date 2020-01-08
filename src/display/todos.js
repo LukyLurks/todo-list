@@ -76,7 +76,7 @@ function setPriorityColor(priority, target) {
 
 function addDeleteButton(target) {
   const button = document.createElement('button');
-  button.textContent = 'Delete';
+  button.textContent = 'Delete this todo';
   button.addEventListener('click', deleteTodo);
   target.appendChild(button);
 }

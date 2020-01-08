@@ -7,6 +7,7 @@ import {
   getTodoElement,
   getProjectElement,
   deleteTodoFromData,
+  deleteProjectFromData,
 } from './data';
 
 let emptyEditsRemain = false;
@@ -63,6 +64,19 @@ function remakeEditedElement(field) {
   }
 }
 
+function deleteProject(event) {
+  const project = getProjectElement(event.target);
+  deleteProjectFromData(event.target);
+  deleteProjectFromDOM(event.target);
+  saveEdits(project);
+  setIndexes(document.querySelector(`#${ids.allProjects}`));
+}
+
+function deleteProjectFromDOM(element) {
+  const project = getProjectElement(element)
+  project.parentNode.removeChild(project);
+}
+
 /**
  * Remove a todo from the DOM and the localStorage
  */
@@ -82,4 +96,5 @@ function deleteTodoFromDOM(element) {
 export {
   enterTextEditMode,
   deleteTodo,
+  deleteProject,
 };

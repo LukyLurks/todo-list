@@ -28,14 +28,16 @@ function setIndexes(elementList) {
 }
 
 function convertProjectToData(projectElement) {
-  return [...projectElement.children].reduce((output, child) => {
-    if (child.classList.contains(classes.title)) {
-      output.title = child.textContent;
-    } else if (child.classList.contains(classes.todoList)) {
-      output.todos = convertTodosToData(child);
-    }
-    return output;
-  }, {});
+  if (projectElement) {
+    return [...projectElement.children].reduce((output, child) => {
+      if (child.classList.contains(classes.title)) {
+        output.title = child.textContent;
+      } else if (child.classList.contains(classes.todoList)) {
+        output.todos = convertTodosToData(child);
+      }
+      return output;
+    }, {});
+  }
 }
 
 function convertTodosToData(todos) {
@@ -110,7 +112,9 @@ function isProject(node) {
  */
 function saveEdits(element) {
   let updatedProject = convertProjectToData(getProjectElement(element));
-  projectsData[getProjectIndex(element)] = updatedProject;
+  if (updatedProject) {
+    projectsData[getProjectIndex(element)] = updatedProject;
+  }
   saveProjects(projectsData);
 }
 
@@ -120,10 +124,16 @@ function deleteTodoFromData(element) {
   projectsData[projectIndex].todos.splice(todoIndex, 1);
 }
 
+function deleteProjectFromData(element) {
+  const projectIndex = getProjectIndex(element);
+  projectsData.splice(projectIndex, 1);
+}
+
 export {
   setIndexes,
   getTodoElement,
   getProjectElement,
   deleteTodoFromData,
+  deleteProjectFromData,
   saveEdits,
 };

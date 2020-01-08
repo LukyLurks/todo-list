@@ -3,6 +3,7 @@ import { formatTodos } from './todos';
 import { formatTitle } from './common';
 import { ids } from '../selectors';
 import { setIndexes } from '../editing/data';
+import { deleteProject } from '../editing/display';
 
 function renderProjects(projects) {
   document.body.appendChild(formatProjects(projects));
@@ -39,7 +40,15 @@ function formatSingleProject(project) {
         break;
     }
   }
+  addDeleteButton(output);
   return output;
+}
+
+function addDeleteButton(target) {
+  const button = document.createElement('button');
+  button.textContent = 'Delete this project';
+  button.addEventListener('click', deleteProject);
+  target.appendChild(button);
 }
 
 export {
