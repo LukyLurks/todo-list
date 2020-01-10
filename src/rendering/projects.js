@@ -2,8 +2,8 @@ import { enterTextEditMode } from '../editing/display';
 import { formatTodos } from './todos';
 import { formatTitle } from './common';
 import { ids } from '../selectors';
-import { setIndexes } from '../editing/data';
-import { deleteProject } from '../editing/display';
+import { setIndexes, getProjectElement } from '../editing/data';
+import { deleteProject, createTodo } from '../editing/display';
 
 function renderProjects(projects) {
   document.body.appendChild(formatProjects(projects));
@@ -40,17 +40,35 @@ function formatSingleProject(project) {
         break;
     }
   }
-  addDeleteButton(output);
+  addButtons(output);
   return output;
 }
 
-function addDeleteButton(target) {
+function addButtons(element) {
+  addDeleteButton(element);
+  addNewTodoButton(element);
+}
+
+function addDeleteButton(element) {
   const button = document.createElement('button');
   button.textContent = 'Delete this project';
   button.addEventListener('click', deleteProject);
-  target.appendChild(button);
+  element.appendChild(button);
+}
+
+function deleteProjectFromDOM(element) {
+  const project = getProjectElement(element)
+  return project.parentNode.removeChild(project);
+}
+
+function addNewTodoButton(element) {
+  const button = document.createElement('button');
+  button.textContent = 'New Todo';
+  button.addEventListener('click', createTodo);
+  element.appendChild(button);
 }
 
 export {
   renderProjects,
+  deleteProjectFromDOM,
 };

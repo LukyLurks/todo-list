@@ -1,14 +1,8 @@
-import { formatTitle } from '../display/common';
-import { formatDescription } from '../display/todos';
-import { classes, ids } from '../selectors';
-import { 
-  saveEdits,
-  setIndexes,
-  getTodoElement,
-  getProjectElement,
-  deleteTodoFromData,
-  deleteProjectFromData,
-} from './data';
+import { remakeEditedElement } from '../rendering/common';
+import { deleteProjectFromDOM } from '../rendering/projects';
+import { addTodoToDOM, deleteTodoFromDOM } from '../rendering/todos';
+import { classes } from '../selectors';
+import { deleteTodoFromData, deleteProjectFromData, update } from './data';
 
 let emptyEditsRemain = false;
 
@@ -50,51 +44,33 @@ function applyTextEdit(event) {
     let newElement = remakeEditedElement(editedField);
     editedField.parentNode.replaceChild(newElement, editedField);
     emptyEditsRemain = false;
-    saveEdits(newElement);
+    update(newElement);
   } else {
     emptyEditsRemain = true;
   }
 }
 
-function remakeEditedElement(field) {
-  if (field.classList.contains(classes.title)) {
-    return formatTitle(field.value);
-  } else if (field.classList.contains(classes.description)) {
-    return formatDescription(field.value);
-  }
-}
-
 function deleteProject(event) {
-  const project = getProjectElement(event.target);
   deleteProjectFromData(event.target);
-  deleteProjectFromDOM(event.target);
-  saveEdits(project);
-  setIndexes(document.querySelector(`#${ids.allProjects}`));
-}
-
-function deleteProjectFromDOM(element) {
-  const project = getProjectElement(element)
-  project.parentNode.removeChild(project);
+  update(deleteProjectFromDOM(event.target));
 }
 
 /**
  * Remove a todo from the DOM and the localStorage
  */
 function deleteTodo(event) {
-  const project = getProjectElement(event.target);
   deleteTodoFromData(event.target);
-  deleteTodoFromDOM(event.target);
-  saveEdits(project);
-  setIndexes(document.querySelector(`#${ids.allProjects}`));
+  update(deleteTodoFromDOM(event.target));
 }
 
-function deleteTodoFromDOM(element) {
-  const todo = getTodoElement(element);
-  todo.parentNode.removeChild(todo);
+function createTodo(event) {
+  addTodoToDOM(event.target);
+  update(event.target);
 }
 
 export {
   enterTextEditMode,
   deleteTodo,
   deleteProject,
+  createTodo,
 };

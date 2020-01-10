@@ -2,6 +2,8 @@ import { formatISO } from 'date-fns';
 import { formatTitle } from './common';
 import { classes } from '../selectors';
 import { deleteTodo } from '../editing/display';
+import { getTodoElement, getProjectElement } from '../editing/data';
+import { Todo } from '../models/todo';
 
 function formatTodos(todos) {
   const todoList = makeTodoListContainer();
@@ -70,18 +72,32 @@ function formatPriority(priority) {
   return element;
 }
 
-function setPriorityColor(priority, target) {
-  target.style.outline = `1px solid ${priority.color}`;
+function setPriorityColor(priority, element) {
+  element.style.outline = `1px solid ${priority.color}`;
 }
 
-function addDeleteButton(target) {
+function addDeleteButton(element) {
   const button = document.createElement('button');
   button.textContent = 'Delete this todo';
   button.addEventListener('click', deleteTodo);
-  target.appendChild(button);
+  element.appendChild(button);
+}
+
+function deleteTodoFromDOM(element) {
+  const todo = getTodoElement(element);
+  return todo.parentNode.removeChild(todo);
+}
+
+function addTodoToDOM(target) {
+  const project = getProjectElement(target);
+  const newTodo = formatSingleTodo(Todo());
+  const todoList = project.querySelector(`.${classes.todoList}`);
+  todoList.appendChild(newTodo);
 }
 
 export {
   formatTodos,
   formatDescription,
+  addTodoToDOM,
+  deleteTodoFromDOM,
 }

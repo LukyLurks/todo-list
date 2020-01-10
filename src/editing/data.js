@@ -61,6 +61,11 @@ function convertTodoToData(todoElement) {
   }, {});
 }
 
+function update(project) {
+  saveEdits(project);
+  setIndexes(document.querySelector(`#${ids.allProjects}`));
+}
+
 /**
  * Select the project DOM element containing that node
  */
@@ -108,7 +113,7 @@ function isProject(node) {
 }
 
 /**
- * Save edits in the localStorage
+ * Save edits in the object and the localStorage
  */
 function saveEdits(element) {
   let updatedProject = convertProjectToData(getProjectElement(element));
@@ -132,6 +137,7 @@ function deleteProjectFromData(element) {
 export {
   setIndexes,
   getTodoElement,
+  update,
   getProjectElement,
   deleteTodoFromData,
   deleteProjectFromData,
