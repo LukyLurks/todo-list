@@ -60,14 +60,14 @@ function formatDescription(description) {
 
 function formatDate(date) {
   const element = document.createElement('p');
-  element.classList.add(classes.deadline);
+  element.classList.add(classes.deadline, classes.editable);
   element.textContent = formatISO(new Date(date), { representation: 'date'});
   return element;
 }
 
 function formatPriority(priority) {
   const element = formatTitle(priority.level);
-  element.classList.remove(classes.title, classes.editableText);
+  element.classList.remove(classes.title, classes.editable);
   element.classList.add(classes.priority);
   return element;
 }
@@ -97,6 +97,7 @@ function addTodoToDOM(target) {
 
 export {
   formatTodos,
+  formatDate,
   formatDescription,
   addTodoToDOM,
   deleteTodoFromDOM,

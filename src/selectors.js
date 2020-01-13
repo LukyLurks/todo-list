@@ -1,6 +1,5 @@
 const classes = {
-  editableText : 'editable-text',
-  editableDate : 'editable-date',
+  editable : 'editable',
   todoList: 'todo-list',
   todo: 'todo',
   project: 'project',

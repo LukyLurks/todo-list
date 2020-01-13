@@ -6,18 +6,18 @@ import { deleteTodoData, deleteProjectData, update } from './data';
 
 let emptyEditsRemain = false;
 
-function enterTextEditMode(event) {
+function enterEditMode(event) {
   if (emptyEditsRemain && !isInput(event.target)) {
     signalEmptyEdits();
   }
   if (document.activeElement === event.target) {
     return;
   }
-  if (isEditableText(event.target)) {
-    const textToEdit = event.target;
-    const parent = textToEdit.parentNode;
-    const editingField = createTextEditField(textToEdit);
-    parent.replaceChild(editingField, textToEdit);
+  if (isEditable(event.target)) {
+    const elementToEdit = event.target;
+    const parent = elementToEdit.parentNode;
+    const editingField = createEditField(elementToEdit);
+    parent.replaceChild(editingField, elementToEdit);
     editingField.focus();
   }
 }
@@ -26,23 +26,32 @@ function signalEmptyEdits() {
   alert('Please make sure no field is empty before attempting more edits.');
 }
 
-function isEditableText(element) {
-  return element.classList.contains(classes.editableText);
+function isEditable(element) {
+  return element.classList.contains(classes.editable);
 }
 
 function isInput(element) {
   return element.tagName.toLowerCase() === 'input';
 }
 
-function createTextEditField(textElement) {
+function isDeadline(element) {
+  return element.classList.contains(classes.deadline);
+}
+
+function createEditField(element) {
   const field = document.createElement('input');
-  field.value = textElement.textContent;
-  field.classList.add(...textElement.classList.values())
-  field.addEventListener('blur', applyTextEdit);
+  if (isDeadline(element)) {
+    field.setAttribute('type', 'date');
+  } else {
+    field.setAttribute('type', 'text');
+  }
+  field.value = element.textContent;
+  field.classList.add(...element.classList.values())
+  field.addEventListener('blur', applyEdit);
   return field;
 }
 
-function applyTextEdit(event) {
+function applyEdit(event) {
   const editedField = event.target;
   if (editedField.value) {
     let newElement = remakeEditedElement(editedField);
@@ -73,7 +82,7 @@ function createTodo(event) {
 }
 
 export {
-  enterTextEditMode,
+  enterEditMode as enterTextEditMode,
   deleteTodo,
   deleteProject,
   createTodo,
