@@ -1,13 +1,13 @@
 import { remakeEditedElement } from '../rendering/common';
-import { deleteProjectFromDOM } from '../rendering/projects';
+import { addProjectToDOM, deleteProjectFromDOM } from '../rendering/projects';
 import { addTodoToDOM, deleteTodoFromDOM } from '../rendering/todos';
 import { classes } from '../selectors';
-import { deleteTodoFromData, deleteProjectFromData, update } from './data';
+import { deleteTodoData, deleteProjectData, update } from './data';
 
 let emptyEditsRemain = false;
 
 function enterTextEditMode(event) {
-  if (emptyEditsRemain) {
+  if (emptyEditsRemain && !isInput(event.target)) {
     signalEmptyEdits();
   }
   if (document.activeElement === event.target) {
@@ -28,6 +28,10 @@ function signalEmptyEdits() {
 
 function isEditableText(element) {
   return element.classList.contains(classes.editableText);
+}
+
+function isInput(element) {
+  return element.tagName.toLowerCase() === 'input';
 }
 
 function createTextEditField(textElement) {
@@ -51,21 +55,21 @@ function applyTextEdit(event) {
 }
 
 function deleteProject(event) {
-  deleteProjectFromData(event.target);
+  deleteProjectData(event.target);
   update(deleteProjectFromDOM(event.target));
 }
 
-/**
- * Remove a todo from the DOM and the localStorage
- */
+function createProject() {
+  update(addProjectToDOM());
+}
+
 function deleteTodo(event) {
-  deleteTodoFromData(event.target);
+  deleteTodoData(event.target);
   update(deleteTodoFromDOM(event.target));
 }
 
 function createTodo(event) {
-  addTodoToDOM(event.target);
-  update(event.target);
+  update(addTodoToDOM(event.target));
 }
 
 export {
@@ -73,4 +77,5 @@ export {
   deleteTodo,
   deleteProject,
   createTodo,
+  createProject,
 };

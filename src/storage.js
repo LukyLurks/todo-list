@@ -1,5 +1,5 @@
 // Key for accessing the projects through localStorage
-const storageKey = 'todoProjects';
+const storageKey = 'TOPtodoProjects';
 
 function saveProjects(projects) {
   try {

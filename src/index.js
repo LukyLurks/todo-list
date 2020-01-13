@@ -1,20 +1,18 @@
 import { Project } from './models/project';
-import { Todo } from './models/todo';
 import { loadProjects, saveProjects } from './storage';
-import { renderProjects } from './rendering/projects';
+import { renderProjects, addNewProjectButton } from './rendering/projects';
 
-function initProjects() {
-  return loadProjects() || [Project()];
+function createDefaultProject() {
+  return [Project()];
 }
 
-// Testing storage functions
-let projectsData = initProjects();
-projectsData.push(Project('test',[Todo()]));
-saveProjects(projectsData);
-projectsData = loadProjects();
+let projectsData = loadProjects();
+if (!projectsData || projectsData.length <= 0) {
+  projectsData = createDefaultProject();
+  saveProjects(projectsData);
+}
 renderProjects(projectsData);
-// cleaning up after tests
-localStorage.removeItem('todoProjects');
+addNewProjectButton();
 
 export {
   projectsData,

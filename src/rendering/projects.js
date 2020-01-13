@@ -1,9 +1,10 @@
 import { enterTextEditMode } from '../editing/display';
 import { formatTodos } from './todos';
 import { formatTitle } from './common';
-import { ids } from '../selectors';
+import { ids, classes } from '../selectors';
 import { setIndexes, getProjectElement } from '../editing/data';
-import { deleteProject, createTodo } from '../editing/display';
+import { deleteProject, createTodo, createProject } from '../editing/display';
+import { Project } from '../models/project';
 
 function renderProjects(projects) {
   document.body.appendChild(formatProjects(projects));
@@ -41,6 +42,7 @@ function formatSingleProject(project) {
     }
   }
   addButtons(output);
+  output.classList.add(classes.project);
   return output;
 }
 
@@ -54,6 +56,20 @@ function addDeleteButton(element) {
   button.textContent = 'Delete this project';
   button.addEventListener('click', deleteProject);
   element.appendChild(button);
+}
+
+function addNewProjectButton(element) {
+  const root = document.querySelector(`#${ids.allProjects}`).parentNode;
+  const button = document.createElement('button');
+  button.textContent = 'New Project';
+  button.addEventListener('click', createProject);
+  root.insertBefore(button, root.firstChild);
+}
+
+function addProjectToDOM() {
+  const allProjects = document.querySelector(`#${ids.allProjects}`);
+  const newProject = formatSingleProject(Project());
+  return allProjects.appendChild(newProject);
 }
 
 function deleteProjectFromDOM(element) {
@@ -70,5 +86,7 @@ function addNewTodoButton(element) {
 
 export {
   renderProjects,
+  addProjectToDOM,
   deleteProjectFromDOM,
+  addNewProjectButton,
 };

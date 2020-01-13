@@ -92,7 +92,7 @@ function addTodoToDOM(target) {
   const project = getProjectElement(target);
   const newTodo = formatSingleTodo(Todo());
   const todoList = project.querySelector(`.${classes.todoList}`);
-  todoList.appendChild(newTodo);
+  return todoList.appendChild(newTodo);
 }
 
 export {

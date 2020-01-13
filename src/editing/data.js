@@ -22,7 +22,9 @@ function setIndexes(elementList) {
   }
 
   [...elementList.children].forEach((element, index) => {
-    element.setAttribute(attribute, index);
+    if (isProject(element) || isTodo(element)) {
+      element.setAttribute(attribute, index);
+    }
     setIndexes(element.querySelector(`.${classes.todoList}`));
   });
 }
@@ -32,7 +34,7 @@ function convertProjectToData(projectElement) {
     return [...projectElement.children].reduce((output, child) => {
       if (child.classList.contains(classes.title)) {
         output.title = child.textContent;
-      } else if (child.classList.contains(classes.todoList)) {
+      } else if (isTodoList(child)) {
         output.todos = convertTodosToData(child);
       }
       return output;
@@ -61,9 +63,12 @@ function convertTodoToData(todoElement) {
   }, {});
 }
 
+/**
+ * Update the indexes in the DOM and the data in the browser and localStorage
+ */
 function update(project) {
-  saveEdits(project);
   setIndexes(document.querySelector(`#${ids.allProjects}`));
+  saveEdits(project);
 }
 
 /**
@@ -112,8 +117,17 @@ function isProject(node) {
   return node.classList.contains(classes.project);
 }
 
+function isTodo(node) {
+  return node.classList.contains(classes.todo);
+}
+
+function isTodoList(node) {
+  return node.classList.contains(classes.todoList);
+}
+
+
 /**
- * Save edits in the object and the localStorage
+ * Reflect the changes to an element in the DOM on the objects and localStorage
  */
 function saveEdits(element) {
   let updatedProject = convertProjectToData(getProjectElement(element));
@@ -123,13 +137,13 @@ function saveEdits(element) {
   saveProjects(projectsData);
 }
 
-function deleteTodoFromData(element) {
+function deleteTodoData(element) {
   const todoIndex = getTodoIndex(element);
   const projectIndex = getProjectIndex(element);
   projectsData[projectIndex].todos.splice(todoIndex, 1);
 }
 
-function deleteProjectFromData(element) {
+function deleteProjectData(element) {
   const projectIndex = getProjectIndex(element);
   projectsData.splice(projectIndex, 1);
 }
@@ -139,7 +153,7 @@ export {
   getTodoElement,
   update,
   getProjectElement,
-  deleteTodoFromData,
-  deleteProjectFromData,
+  deleteTodoData,
+  deleteProjectData,
   saveEdits,
 };
