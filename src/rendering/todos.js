@@ -2,8 +2,8 @@ import { formatISO } from 'date-fns';
 import { formatTitle } from './common';
 import { classes } from '../selectors';
 import { deleteTodo } from '../editing/display';
-import { getTodoElement, getProjectElement } from '../editing/data';
-import { Todo } from '../models/todo';
+import { getTodoElement, getProjectElement, update } from '../editing/data';
+import { Todo, priorityLevels } from '../models/todo';
 
 function formatTodos(todos) {
   const todoList = makeTodoListContainer();
@@ -60,16 +60,37 @@ function formatDescription(description) {
 
 function formatDate(date) {
   const element = document.createElement('p');
-  element.classList.add(classes.deadline, classes.editable);
+  element.classList.add(classes.editable, classes.deadline);
   element.textContent = formatISO(new Date(date), { representation: 'date'});
   return element;
 }
 
 function formatPriority(priority) {
-  const element = formatTitle(priority.level);
-  element.classList.remove(classes.title, classes.editable);
-  element.classList.add(classes.priority);
+  const element = document.createElement('select');
+  element.classList.add(classes.prioritySelect);
+  element.addEventListener('change', updatePriority);
+  for (const key in priorityLevels) {
+    const option = makeOptionElement(priority, key);
+    element.appendChild(option);
+  }
   return element;
+}
+
+function makeOptionElement(priority, key) {
+  const option = document.createElement('option');
+  option.value = key;
+  option.textContent = priorityLevels[key].level;
+  option.classList.add(classes.priority);
+  if (priorityLevels[key].level === priority.level) {
+    option.setAttribute('selected', '');
+  }
+  return option;
+}
+
+function updatePriority(event) {
+  const todo = getTodoElement(event.target);
+  setPriorityColor(priorityLevels[event.target.value], todo);
+  update(todo);
 }
 
 function setPriorityColor(priority, element) {

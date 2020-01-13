@@ -7,6 +7,7 @@ const classes = {
   description: 'description',
   deadline: 'deadline',
   priority: 'priority',
+  prioritySelect: 'priority-select',
 };
 
 const attributes = {

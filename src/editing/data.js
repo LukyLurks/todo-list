@@ -56,8 +56,8 @@ function convertTodoToData(todoElement) {
       output.description = child.textContent;
     } else if (child.classList.contains(classes.deadline)) {
       output.deadline = new Date(child.textContent);
-    } else if (child.classList.contains(classes.priority)) {
-      output.priority = priorityLevels[child.textContent.toLowerCase()];
+    } else if (child.classList.contains(classes.prioritySelect)) {
+      output.priority = priorityLevels[child.value];
     }
     return output;
   }, {});
@@ -72,7 +72,9 @@ function update(project) {
 }
 
 /**
- * Select the project DOM element containing that node
+ * Select the project containing the node argument
+ * Essentially the argument will be an event.target for an edit,
+ * and we'll select the project to apply the changes
  */
 function getProjectElement(node) {
   return document.querySelector(
@@ -80,10 +82,6 @@ function getProjectElement(node) {
   );
 }
 
-/**
- * Gets the index of the project containing that node, to either
- * grab the DOM element or reference the array containing the rendered data
- */
 function getProjectIndex(node) {
   if (node.hasAttribute(attributes.projectIndex)) {
     return +node.getAttribute(attributes.projectIndex);
@@ -93,18 +91,17 @@ function getProjectIndex(node) {
 }
 
 /**
- * Select the project DOM element containing that node
+ * Select the todo containing the node argument
+ * Essentially the argument will be an event.target for an edit,
+ * and we'll select the todo to apply the changes
  */
 function getTodoElement(node) {
-  return document.querySelector(
+  const project = getProjectElement(node);
+  return project.querySelector(
     `[${attributes.todoIndex}="${getTodoIndex(node)}"]`
   );
 }
 
-/**
- * Gets the index of the todo containing that node within one project,
- * grab the DOM element or reference the array containing the rendered data
- */
 function getTodoIndex(node) {
   if (node.hasAttribute(attributes.todoIndex)) {
     return +node.getAttribute(attributes.todoIndex);
