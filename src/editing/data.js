@@ -4,12 +4,7 @@ import { projectsData } from '../index';
 import { saveProjects } from '../storage';
 
 /**
- * Indexes the projects in the DOM with an attribute according to the index 
- * in the array they're stored in
- * Looks recursively inside to index the todos in the same way, with a different
- * attribute
- * 
- * The indexes are used to refer to elements when editing, saving, deleting etc.
+ * Indexes projects and todos on the page with an attribute
  */
 function setIndexes(elementList) {
   if (!elementList || elementList.length < 0) {
@@ -29,6 +24,10 @@ function setIndexes(elementList) {
   });
 }
 
+/**
+ * Converts the projects from the page into an object to be stringified then
+ * saved in localStorage
+ */
 function convertProjectToData(projectElement) {
   if (projectElement) {
     return [...projectElement.children].reduce((output, child) => {
@@ -42,13 +41,21 @@ function convertProjectToData(projectElement) {
   }
 }
 
+/**
+ * Convert the todos of a project from a page into an array of todo objects
+ * that can be saved in localStorage
+ */
 function convertTodosToData(todos) {
   return [...todos.children].reduce((output, todo) => {
-    return output.concat(convertTodoToData(todo));
+    return output.concat(convertSingleTodo(todo));
   }, []);
 }
 
-function convertTodoToData(todoElement) {
+/**
+ * Convert a todo from the page into an object that respects the form of 
+ * the todo.js model
+ */
+function convertSingleTodo(todoElement) {
   return [...todoElement.children].reduce((output, child) => {
     if (child.classList.contains(classes.title)) {
       output.title = child.textContent;
@@ -64,7 +71,18 @@ function convertTodoToData(todoElement) {
 }
 
 /**
- * Update the indexes in the DOM and the data in the browser and localStorage
+ * Save the changes happening on the page into localStorage
+ */
+function saveEdits(element) {
+  let updatedProject = convertProjectToData(getProjectElement(element));
+  if (updatedProject) {
+    projectsData[getProjectIndex(element)] = updatedProject;
+  }
+  saveProjects(projectsData);
+}
+
+/**
+ * Should be called in reaction to changes on the page to save them
  */
 function update(project) {
   setIndexes(document.querySelector(`#${ids.allProjects}`));
@@ -72,9 +90,9 @@ function update(project) {
 }
 
 /**
- * Select the project containing the node argument
+ * Select the project containing the node passed as argument
  * Essentially the argument will be an event.target for an edit,
- * and we'll select the project to apply the changes
+ * and we'll need to select the project to apply the changes
  */
 function getProjectElement(node) {
   return document.querySelector(
@@ -91,9 +109,9 @@ function getProjectIndex(node) {
 }
 
 /**
- * Select the todo containing the node argument
+ * Select the todo containing the node passed as argument
  * Essentially the argument will be an event.target for an edit,
- * and we'll select the todo to apply the changes
+ * and we'll need to select the todo to apply the changes
  */
 function getTodoElement(node) {
   const project = getProjectElement(node);
@@ -110,6 +128,23 @@ function getTodoIndex(node) {
   }
 }
 
+/**
+ * Removes 1 todo from the session data
+ */
+function deleteTodoData(element) {
+  const todoIndex = getTodoIndex(element);
+  const projectIndex = getProjectIndex(element);
+  projectsData[projectIndex].todos.splice(todoIndex, 1);
+}
+
+/**
+ * Removes 1 project from the session data
+ */
+function deleteProjectData(element) {
+  const projectIndex = getProjectIndex(element);
+  projectsData.splice(projectIndex, 1);
+}
+
 function isProject(node) {
   return node.classList.contains(classes.project);
 }
@@ -122,35 +157,12 @@ function isTodoList(node) {
   return node.classList.contains(classes.todoList);
 }
 
-
-/**
- * Reflect the changes to an element in the DOM on the objects and localStorage
- */
-function saveEdits(element) {
-  let updatedProject = convertProjectToData(getProjectElement(element));
-  if (updatedProject) {
-    projectsData[getProjectIndex(element)] = updatedProject;
-  }
-  saveProjects(projectsData);
-}
-
-function deleteTodoData(element) {
-  const todoIndex = getTodoIndex(element);
-  const projectIndex = getProjectIndex(element);
-  projectsData[projectIndex].todos.splice(todoIndex, 1);
-}
-
-function deleteProjectData(element) {
-  const projectIndex = getProjectIndex(element);
-  projectsData.splice(projectIndex, 1);
-}
-
 export {
   setIndexes,
-  getTodoElement,
+  saveEdits,
   update,
+  getTodoElement,
   getProjectElement,
   deleteTodoData,
   deleteProjectData,
-  saveEdits,
 };

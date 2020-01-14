@@ -6,21 +6,21 @@ import { getTodoElement, getProjectElement, update } from '../editing/data';
 import { Todo, priorityLevels } from '../models/todo';
 
 function formatTodos(todos) {
-  const todoList = makeTodoListContainer();
+  const todoList = createTodoList();
   todos.forEach(item => {
     todoList.appendChild(formatSingleTodo(item));
   });
   return todoList;
 }
 
-function makeTodoListContainer() {
-  let todoContainer = document.createElement('ul');
-  todoContainer.classList.add(classes.todoList);
-  return todoContainer;
+function createTodoList() {
+  let todoList = document.createElement('ul');
+  todoList.classList.add(classes.todoList);
+  return todoList;
 }
 
 function formatSingleTodo(todo) {
-  const output = makeTodoItem();
+  const output = createTodoItem();
   for (let key in todo) {
     switch (key) {
       case 'title':
@@ -45,7 +45,7 @@ function formatSingleTodo(todo) {
   return output;
 }
 
-function makeTodoItem() {
+function createTodoItem() {
   const todo = document.createElement('li');
   todo.classList.add(classes.todo);
   return todo;

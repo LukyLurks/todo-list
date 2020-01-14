@@ -1,4 +1,4 @@
-import { enterTextEditMode } from '../editing/display';
+import { enterEditMode } from '../editing/display';
 import { formatTodos } from './todos';
 import { formatTitle } from './common';
 import { ids, classes } from '../selectors';
@@ -12,7 +12,7 @@ function renderProjects(projects) {
 
 function formatProjects(projects) {
   const container = createProjectsContainer();
-  container.addEventListener('click', enterTextEditMode);
+  container.addEventListener('click', enterEditMode);
   projects.forEach(project => {
     container.appendChild(formatSingleProject(project))
   });
@@ -58,7 +58,7 @@ function addDeleteButton(element) {
   element.appendChild(button);
 }
 
-function addNewProjectButton(element) {
+function addNewProjectButton() {
   const root = document.querySelector(`#${ids.allProjects}`).parentNode;
   const button = document.createElement('button');
   button.textContent = 'New Project';

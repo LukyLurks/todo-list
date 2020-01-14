@@ -1,5 +1,6 @@
-import { classes } from '../selectors';
 import { formatDescription, formatDate } from './todos';
+import { isDeadline } from '../editing/display';
+import { classes } from '../selectors';
 
 // Format project titles and todo titles
 function formatTitle(title) {
@@ -24,10 +25,6 @@ function isTitle(element) {
 }
 function isDescription(element) {
   return element.classList.contains(classes.description);
-}
-
-function isDeadline(element) {
-  return element.classList.contains(classes.deadline);
 }
 
 export {
