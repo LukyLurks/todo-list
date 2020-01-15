@@ -8,6 +8,7 @@ const classes = {
   deadline: 'deadline',
   priority: 'priority',
   prioritySelect: 'priority-select',
+  completedFlag: 'completed-flag',
 };
 
 const attributes = {

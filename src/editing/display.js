@@ -64,6 +64,10 @@ function applyEdit(event) {
   }
 }
 
+function toggleCompletion(event) {
+  update(event.target);
+}
+
 function deleteProject(event) {
   deleteProjectData(event.target);
   update(deleteProjectFromDOM(event.target));
@@ -100,5 +104,6 @@ export {
   deleteProject,
   createTodo,
   createProject,
+  toggleCompletion,
   isDeadline,
 };

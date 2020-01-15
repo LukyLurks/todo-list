@@ -65,6 +65,8 @@ function convertSingleTodo(todoElement) {
       output.deadline = new Date(child.textContent);
     } else if (child.classList.contains(classes.prioritySelect)) {
       output.priority = priorityLevels[child.value];
+    } else if (child.classList.contains(classes.completedFlag)) {
+      output.completed = child.checked;
     }
     return output;
   }, {});

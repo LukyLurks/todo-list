@@ -4,6 +4,7 @@ function Todo(title, description, deadline, priority) {
     description: description ? description : "Task description",
     deadline: deadline ? deadline : new Date(),
     priority: priority ? priority : priorityLevels.normal,
+    completed: false,
   };
 }
 

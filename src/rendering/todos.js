@@ -1,7 +1,7 @@
 import { formatISO } from 'date-fns';
 import { formatTitle } from './common';
 import { classes } from '../selectors';
-import { deleteTodo } from '../editing/display';
+import { deleteTodo, toggleCompletion } from '../editing/display';
 import { getTodoElement, getProjectElement, update } from '../editing/data';
 import { Todo, priorityLevels } from '../models/todo';
 
@@ -35,6 +35,9 @@ function formatSingleTodo(todo) {
       case 'priority':
         output.appendChild(formatPriority(todo[key]));
         setPriorityColor(todo[key], output);
+        break;
+      case 'completed':
+        output.appendChild(formatCompletion(todo[key]));
         break;
       default:
         console.warn(`Unexpected key ${key} while formatting todo: skipping`);
@@ -95,6 +98,17 @@ function updatePriority(event) {
 
 function setPriorityColor(priority, element) {
   element.style.outline = `1px solid ${priority.color}`;
+}
+
+function formatCompletion(completed) {
+  const checkbox = document.createElement('input');
+  checkbox.classList.add(classes.completedFlag);
+  checkbox.setAttribute('type', 'checkbox');
+  if (completed === true) {
+    checkbox.setAttribute('checked', '');
+  }
+  checkbox.addEventListener('change', toggleCompletion);
+  return checkbox;
 }
 
 function addDeleteButton(element) {
