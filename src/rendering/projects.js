@@ -7,7 +7,8 @@ import { deleteProject, createTodo, createProject } from '../editing/display';
 import { Project } from '../models/project';
 
 function renderProjects(projects) {
-  document.body.appendChild(formatProjects(projects));
+  const content = document.querySelector('#content');
+  content.appendChild(formatProjects(projects));
 }
 
 function formatProjects(projects) {
@@ -60,7 +61,7 @@ function addDeleteButton(element) {
 }
 
 function addNewProjectButton() {
-  const root = document.querySelector(`#${ids.allProjects}`).parentNode;
+  const root = document.querySelector('#content');
   const button = document.createElement('button');
   button.textContent = '➕ New Project';
   button.id = ids.newProjectButton;
