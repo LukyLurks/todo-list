@@ -37,7 +37,7 @@ function formatSingleTodo(todo) {
         setPriorityColor(todo[key], output);
         break;
       case 'completed':
-        output.appendChild(formatCompletion(todo[key]));
+        output.appendChild(formatCompletion(todo[key], output));
         break;
       default:
         console.warn(`Unexpected key ${key} while formatting todo: skipping`);
@@ -97,15 +97,16 @@ function updatePriority(event) {
 }
 
 function setPriorityColor(priority, element) {
-  element.style.outline = `1px solid ${priority.color}`;
+  element.style.borderLeft = `2px solid ${priority.color}`;
 }
 
-function formatCompletion(completed) {
+function formatCompletion(completed, output) {
   const checkbox = document.createElement('input');
   checkbox.classList.add(classes.completedFlag);
   checkbox.setAttribute('type', 'checkbox');
   if (completed === true) {
     checkbox.setAttribute('checked', '');
+    output.classList.add(classes.done);
   }
   checkbox.addEventListener('change', toggleCompletion);
   return checkbox;
@@ -113,7 +114,8 @@ function formatCompletion(completed) {
 
 function addDeleteButton(element) {
   const button = document.createElement('button');
-  button.textContent = 'Delete this todo';
+  button.textContent = '❌ Delete';
+  button.classList.add(classes.deleteTodoButton);
   button.addEventListener('click', deleteTodo);
   element.appendChild(button);
 }
@@ -130,10 +132,29 @@ function addTodoToDOM(target) {
   return todoList.appendChild(newTodo);
 }
 
+/**
+ * Adds a done class when a todo is checked, removes it when it's unchecked
+ * the done class will add strikethrough to the text to show if it's done 
+ */
+function showIfDone(target) {
+  const todo = getTodoElement(target);
+  if (isDone(todo)) {
+    todo.classList.remove(classes.done);
+  } else {
+    todo.classList.add(classes.done);
+  }
+  return todo;
+}
+
+function isDone(todo) {
+  return todo.classList.contains(classes.done);
+}
+
 export {
   formatTodos,
   formatDate,
   formatDescription,
   addTodoToDOM,
   deleteTodoFromDOM,
+  showIfDone,
 }

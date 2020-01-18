@@ -30,4 +30,5 @@ function isDescription(element) {
 export {
   formatTitle,
   remakeEditedElement,
+  isDescription,
 };

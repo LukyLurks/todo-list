@@ -1,7 +1,7 @@
 function Todo(title, description, deadline, priority) {
   return {
-    title: title ? title : "Todo",
-    description: description ? description : "Task description",
+    title: title ? title : "Buy groceries (click to edit)",
+    description: description ? description : "We're out of broccoli (click to edit)",
     deadline: deadline ? deadline : new Date(),
     priority: priority ? priority : priorityLevels.normal,
     completed: false,
@@ -10,16 +10,16 @@ function Todo(title, description, deadline, priority) {
 
 const priorityLevels = { 
   low: {
-    level: "Low",
-    color: "green"
+    level: " Low priority",
+    color: "hsl(122, 64%, 56%)"
   },
   normal: {
-    level: "Normal",
-    color: "orange"
+    level: " Normal priority",
+    color: "hsl(204, 91%, 56%)"
   },
   high: {
-    level: "High",
-    color: "red"
+    level: " High priority",
+    color: "hsl(35, 100%, 63%)"
   },
 };
 

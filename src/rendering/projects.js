@@ -47,13 +47,14 @@ function formatSingleProject(project) {
 }
 
 function addButtons(element) {
-  addDeleteButton(element);
   addNewTodoButton(element);
+  addDeleteButton(element);
 }
 
 function addDeleteButton(element) {
   const button = document.createElement('button');
-  button.textContent = 'Delete this project';
+  button.textContent = '❌ Delete project';
+  button.classList.add(classes.deleteProjectButton);
   button.addEventListener('click', deleteProject);
   element.appendChild(button);
 }
@@ -61,7 +62,8 @@ function addDeleteButton(element) {
 function addNewProjectButton() {
   const root = document.querySelector(`#${ids.allProjects}`).parentNode;
   const button = document.createElement('button');
-  button.textContent = 'New Project';
+  button.textContent = '➕ New Project';
+  button.id = ids.newProjectButton;
   button.addEventListener('click', createProject);
   root.insertBefore(button, root.firstChild);
 }
@@ -79,7 +81,8 @@ function deleteProjectFromDOM(element) {
 
 function addNewTodoButton(element) {
   const button = document.createElement('button');
-  button.textContent = 'New Todo';
+  button.textContent = '➕ New Todo';
+  button.classList.add(classes.newTodoButton);
   button.addEventListener('click', createTodo);
   element.appendChild(button);
 }

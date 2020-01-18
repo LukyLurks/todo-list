@@ -9,6 +9,10 @@ const classes = {
   priority: 'priority',
   prioritySelect: 'priority-select',
   completedFlag: 'completed-flag',
+  deleteTodoButton: 'delete-todo-button',
+  deleteProjectButton: 'delete-project-button',
+  newTodoButton: 'new-todo-button',
+  done: 'done',
 };
 
 const attributes = {
@@ -18,6 +22,7 @@ const attributes = {
 
 const ids = {
   allProjects: 'all-projects',
+  newProjectButton: 'new-project-button',
 };
 
 export {

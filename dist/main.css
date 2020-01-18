@@ -1,0 +1,110 @@
+/* LAYOUT: PLACEMENT & SPACING OF ELEMENTS, ETC. */
+:root {
+  --small-space: 8px;
+  --medium-space: 12px;
+  --large-space: 16px;
+}
+
+html,
+body
+{
+  margin: var(--medium-space);
+}
+
+/* New Project Button */
+#new-project-button {
+  width: 100%;
+}
+
+/* Projects */
+.project {
+  margin: var(--large-space) 0;
+}
+
+/* Todos */
+.todo {
+  display: grid;
+  grid-template-columns: [left] 5% [middle] 1fr [right] 15%;
+  grid-column-gap: var(--small-space);
+  margin: var(--large-space);
+  padding: var(--small-space) 0 var(--medium-space) var(--small-space);
+}
+
+.todo .title,
+.todo .description,
+.todo .deadline,
+.todo .priority-select
+{
+  grid-column: middle;
+  padding: 4px 0;
+}
+
+.completed-flag {
+  grid-column: left;
+  grid-row: 1;
+  align-self: center;
+  justify-self: center;
+}
+
+.delete-todo-button {
+  grid-column: right;
+  grid-row: 1 / span 1000;
+  align-self: stretch;
+  margin: 0;
+}
+
+button {
+  display: block;
+  margin: var(--small-space);
+}
+
+/* AESTHETICS */
+.todo {
+  border: 1px solid hsla(0, 0%, 5%, 0.2);
+  border-radius: 5px;
+  box-shadow: 0 0 9px -5px hsla(0, 0%, 5%, 0.4);
+}
+
+.project > .title {
+  font-size: 1.2em;
+  width: 100%;
+}
+
+/* Todos */
+input,
+select
+{
+  font-family: serif;
+  font-size: 1em;
+}
+
+.done .title,
+.done .description,
+.done .deadline,
+.done .priority-select
+{
+  text-decoration: line-through;
+  opacity: .5;
+}
+
+button {
+  font-size: .8em;
+  font-weight: bold;
+  text-overflow: clip;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.delete-todo-button,
+.delete-project-button
+{
+  background-color: hsla(0, 80%, 80%, 0.3);
+  color: hsla(0, 40%, 40%, 1);
+}
+
+.new-todo-button,
+#new-project-button
+{
+  background-color: hsla(120, 80%, 80%, 0.3);
+  color: hsla(120, 40%, 40%, 1);
+}

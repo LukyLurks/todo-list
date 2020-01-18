@@ -1,7 +1,7 @@
 import { classes } from '../selectors';
-import { remakeEditedElement } from '../rendering/common';
+import { remakeEditedElement, isDescription } from '../rendering/common';
 import { deleteTodoData, deleteProjectData, update } from './data';
-import { addTodoToDOM, deleteTodoFromDOM } from '../rendering/todos';
+import { addTodoToDOM, deleteTodoFromDOM, showIfDone } from '../rendering/todos';
 import { addProjectToDOM, deleteProjectFromDOM } from '../rendering/projects';
 
 // Indicates if there's any empty text input box within the page
@@ -37,9 +37,11 @@ function signalEmptyEdits() {
  * Create the input box based on the element the user clicked to edit
  */
 function createEditField(element) {
-  const field = document.createElement('input');
+  let field = document.createElement('input');
   if (isDeadline(element)) {
     field.setAttribute('type', 'date');
+  } else if (isDescription(element)) {
+    field = document.createElement('textarea');
   } else {
     field.setAttribute('type', 'text');
   }
@@ -65,12 +67,14 @@ function applyEdit(event) {
 }
 
 function toggleCompletion(event) {
-  update(event.target);
+  update(showIfDone(event.target));
 }
 
 function deleteProject(event) {
-  deleteProjectData(event.target);
-  update(deleteProjectFromDOM(event.target));
+  if (confirm("All todos will be deleted.")) {
+    deleteProjectData(event.target);
+    update(deleteProjectFromDOM(event.target));
+  }
 }
 
 function createProject() {
